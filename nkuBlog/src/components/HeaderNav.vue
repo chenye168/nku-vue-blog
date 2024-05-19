@@ -16,8 +16,9 @@
         <el-menu-item index="/postArticle">发布文章</el-menu-item>
         <el-menu-item @click="logout()">退出登录</el-menu-item>
       </el-sub-menu>
-      <el-menu-item :index="`/${userStore.currentUser}/home`">HOME</el-menu-item>      <el-menu-item :index="getPath('blog')">BLOG</el-menu-item>
-      <el-menu-item :index="getPath('about')">ABOUT</el-menu-item>
+      <el-menu-item :index="`/${userStore.currentUser}/home`">HOME</el-menu-item>
+      <el-menu-item :index="`/${userStore.currentUser}/blog`">BLOG</el-menu-item>
+      <el-menu-item :index="`/${userStore.currentUser}/about`">ABOUT</el-menu-item>
     </el-menu>
   </main>
 </template>

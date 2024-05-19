@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
+
+import Axios from 'axios'
 
 export const userStatus = defineStore(
   'user',
@@ -9,8 +11,9 @@ export const userStatus = defineStore(
     const userName = ref('')
     const currentUser = ref('')
 
+    const lastUrl = ref('')
+
     const updateLogin = computed(() => {
-      console.log('我修改了')
       if (userName.value !== '' && token.value !== '') {
         hasLogin.value = true
       } else {
@@ -19,12 +22,14 @@ export const userStatus = defineStore(
       return hasLogin.value
     })
 
+
     return {
       hasLogin,
       token,
       userName,
       updateLogin,
-      currentUser
+      currentUser,
+      lastUrl
     }
   },
   {

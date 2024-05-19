@@ -2,12 +2,20 @@
 import HeaderNav from '@/components/HeaderNav.vue'
 import Switch from '@/components/SwitchTransition.vue'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+
+
 
 const switchin = ref(true)
-
 const switchOut = (n: boolean) => {
   switchin.value = n
 }
+const route = useRoute()
+// 访问的用户
+const currentUser = route.params.user
+
+
 </script>
 
 <template>

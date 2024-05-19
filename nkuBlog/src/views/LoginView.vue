@@ -15,14 +15,13 @@ import LoginPage from '@/components/LoginPage.vue'
 import Register from '@/components/RegisterPage.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { userStatus } from '@/stores/userStatus'
+const userStore = ref(userStatus())
 const router = useRouter()
 
 const returnPage = () => {
-  router.back()
-  if (router.currentRoute.value.path === '/login') {
-    router(-1)
-  }
+  // 返回上一个没有login的页面
+  router.push(userStore.value.lastUrl)
 }
 
 const isLogin = ref(true)

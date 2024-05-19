@@ -26,9 +26,9 @@ const router = createRouter({
       component: () => import('@/views/HomeView.vue'),
       beforeEnter: (to, from, next) => {
         const userStore = userStatus()
-        let user: string = to.params.user
-        
+        const user: string = to.params.user
         userStore.currentUser = user
+
         next()
       }
     },
@@ -39,6 +39,9 @@ const router = createRouter({
       beforeEnter: (to, from, next) => {
         const routerStore: any = routerStatus()
         routerStore.isRoute()
+        const userStore = userStatus()
+        const user: string = to.params.user
+        userStore.currentUser = user
         setTimeout(() => {
           next()
         }, 900)
@@ -53,7 +56,9 @@ const router = createRouter({
         const routerStore = routerStatus()
 
         routerStore.isRoute()
-
+        const userStore = userStatus()
+        const user: string = to.params.user
+        userStore.currentUser = user
         setTimeout(() => {
           next()
         }, 900)
@@ -67,7 +72,9 @@ const router = createRouter({
         const routerStore = routerStatus()
 
         routerStore.isRoute()
-
+        const userStore = userStatus()
+        const user: string = to.params.user
+        userStore.currentUser = user
         setTimeout(() => {
           next()
         }, 900)
@@ -77,7 +84,12 @@ const router = createRouter({
     {
       path: '/login',
       name: 'userlogin',
-      component: () => import('@/views/LoginView.vue')
+      component: () => import('@/views/LoginView.vue'),
+      beforeEnter: (to, from, next) => {
+        const userStore = userStatus()
+        userStore.lastUrl = from.fullPath
+        next()
+      }
     }
   ]
 })

@@ -130,9 +130,8 @@ def getUserList():
 def getUserArticle():
 
     authorId = request.args.get('userId')
-    authorName = request.args.get('userName')
     
-    if authorId == None and authorName == None:
+    if authorId == None:
         return '参数错误', 400
     
     db = sqlite3.connect('db.sqlite')

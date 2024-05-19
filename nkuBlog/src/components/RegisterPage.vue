@@ -24,17 +24,22 @@
 
 <script lang="ts" setup>
 import { ref, defineProps } from 'vue'
+import { registerUser } from '@/api/RegisterUser'
+
+
 const props = defineProps({
   func: {
     type: Function,
     default: () => {}
   }
 })
-const active = ref(0)
 
+//第几页
+const active = ref(0)
+//前进后退键值
 const backB = ref('Login')
 const nextB = ref('Next Step')
-
+//按键逻辑
 const next = () => {
   if (active.value++ > 1) {
     //更改按键的值
@@ -42,13 +47,29 @@ const next = () => {
   }
   backB.value = 'Back Step'
 }
-
 const back = () => {
   if (backB.value === 'Login') props.func()
   if (active.value-- < 2) backB.value = 'Login'
 
   nextB.value = 'Next Step'
 }
+
+// 测试接口
+// const test = {
+//   userName: "admin",
+//   userPassword: "admin",
+//   photo: "+195XaEQAM4cHcUaDYiBIQRISCMCAFhRAgII0JAGBECwogQEEaEgDAiBIQRISCMCAFhRAgII0JAGBECwogQEEaEgDAiBIQRISCMCAFhRAgII0JAGBECwogQEEaEgDAiBIQRISCMCAFhRAgII0JAGBECwogQEEaEgDAiBIQRISCMCAFhRAgII0JAGBECwogQEEaEgDAiBIQRISCMCAFhRAgII0JAGBECwogQEPZ/PRriLlPTcAQAAAAASUVORK5CYII=",//base64编码
+//   label: ["like1", "like2",],
+//   address: "nankai",
+//   mail: "dfsfdfs",
+//   github: "www.baidu.com",
+//   wechat: {
+//     id: "sdfdsfsdfds",
+//     qrCode: "+Jf8Ar7z/ANff/wDAv"
+//   }
+// };
+// console.log(JSON.stringify(test))
+// console.log(registerUser(JSON.stringify(test)))
 </script>
 
 <style scoped>
@@ -95,19 +116,15 @@ a {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   bottom: 20px;
-  
 }
 
-
-
-.el-steps{
-
-    grid-column: span 2;
-    width: 100%;
+.el-steps {
+  grid-column: span 2;
+  width: 100%;
 }
 
-.el-button{
-    width: 80%;
-    margin: 0 auto;
+.el-button {
+  width: 80%;
+  margin: 0 auto;
 }
 </style>

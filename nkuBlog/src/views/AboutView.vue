@@ -12,13 +12,30 @@
 <script setup lang="ts">
 import HeaderNav from '@/components/HeaderNav.vue'
 import Switch from '@/components/SwitchTransition.vue'
-import { ref } from 'vue'
-
+import { ref, onMounted } from 'vue'
+import { getUserId } from '@/api/GetUserId'
+import { getUserInfo } from '@/api/UserInfo'
+import { userStatus } from '@/stores/userStatus'
+const userStore = ref(userStatus())
 const switchin = ref(true)
 
 const switchOut = (n: boolean) => {
   switchin.value = n
 }
+
+const userInfo = ref([])
+
+const getUser = async () => {
+  // 获取用户信息
+  let res = await getUserId(userStore.value.currentUser)
+  res = await getUserInfo(res.data.userId)
+  return res.data
+}
+
+onMounted(async () => {
+  userInfo.value = await getUser()
+})
+
 </script>
 
 <style scoped>
