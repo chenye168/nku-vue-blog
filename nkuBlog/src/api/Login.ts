@@ -4,7 +4,7 @@ import request from '@/utils/request' // 引入封装得axios
 export function Login(Info: JSON) {    
     
   return request({
-    url: '/api/login',
+    url: '/login',
     method: 'post',
     data: Info
   })

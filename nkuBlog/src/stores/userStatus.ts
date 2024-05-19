@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref, watchEffect } from 'vue'
-
-import Axios from 'axios'
+import { computed, ref } from 'vue'
 
 export const userStatus = defineStore(
   'user',
@@ -22,7 +20,6 @@ export const userStatus = defineStore(
       return hasLogin.value
     })
 
-
     return {
       hasLogin,
       token,
@@ -33,9 +30,7 @@ export const userStatus = defineStore(
     }
   },
   {
-    persist: {
-      enable: true
-    }
+    persist: true
   }
 )
 

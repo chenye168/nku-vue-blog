@@ -14,7 +14,7 @@ import { getUserId } from '@/api/GetUserId'
 import { getUserArticle } from '@/api/UserArticle'
 import { getArticle } from '@/api/GetArticle'
 import { userStatus } from '@/stores/userStatus'
-import { get } from 'node_modules/axios/index.cjs'
+
 
 const switchin = ref(true)
 const switchOut = (n: boolean) => {

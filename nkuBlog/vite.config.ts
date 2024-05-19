@@ -10,8 +10,8 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://api.cycodes.cn',
-        changeOrigin: true,
-        rewrite: (path) => path.replace('/api', '')
+        changeOrigin: true
+        // rewrite: (path) => path.replace('/api', '')
       }
     }
   },
@@ -24,10 +24,9 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: '@import "@/styles/variables.scss";',
-        
+
         javascriptEnabled: true
       }
     }
-  },
-
+  }
 })

@@ -26,7 +26,12 @@ const router = createRouter({
       component: () => import('@/views/HomeView.vue'),
       beforeEnter: (to, from, next) => {
         const userStore = userStatus()
-        const user: string = to.params.user
+        let user: string
+        if (Array.isArray(to.params.user)) {
+          user = to.params.user[0]
+        } else {
+          user = to.params.user
+        }
         userStore.currentUser = user
 
         next()
@@ -40,7 +45,12 @@ const router = createRouter({
         const routerStore: any = routerStatus()
         routerStore.isRoute()
         const userStore = userStatus()
-        const user: string = to.params.user
+        let user: string
+        if (Array.isArray(to.params.user)) {
+          user = to.params.user[0]
+        } else {
+          user = to.params.user
+        }
         userStore.currentUser = user
         setTimeout(() => {
           next()
@@ -57,7 +67,12 @@ const router = createRouter({
 
         routerStore.isRoute()
         const userStore = userStatus()
-        const user: string = to.params.user
+        let user: string
+        if (Array.isArray(to.params.user)) {
+          user = to.params.user[0]
+        } else {
+          user = to.params.user
+        }
         userStore.currentUser = user
         setTimeout(() => {
           next()
@@ -73,7 +88,12 @@ const router = createRouter({
 
         routerStore.isRoute()
         const userStore = userStatus()
-        const user: string = to.params.user
+        let user: string
+        if (Array.isArray(to.params.user)) {
+          user = to.params.user[0]
+        } else {
+          user = to.params.user
+        }
         userStore.currentUser = user
         setTimeout(() => {
           next()

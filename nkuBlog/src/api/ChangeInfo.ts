@@ -1,7 +1,11 @@
 import request from '@/utils/request' // 引入封装得axios
 
+
+interface InfoInterface {
+  [key: string]: string;
+}
 // 获取用户列表
-export function RegisterUser(Info: JSON) {
+export function RegisterUser(Info: InfoInterface) {
   for (const key in Info) {
     if (Info[key] === '') {
       delete Info[key]
@@ -12,7 +16,7 @@ export function RegisterUser(Info: JSON) {
   }
 
   return request({
-    url: '/api/setUser',
+    url: '/setUser',
     method: 'post',
     data: Info
   })
