@@ -43,8 +43,8 @@ a,
 @font-face {
   font-family: 'erikos';
   src:
-    url('./erikos.woff2') format('woff2'),
-    url('./erikos.woff') format('woff');
+    url('../fonts/erikos.woff2') format('woff2'),
+    url('../fonts/erikos.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-size: 67.5%;

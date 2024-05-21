@@ -16,7 +16,7 @@ export function RegisterUser(Info: InfoInterface) {
   }
 
   return request({
-    url: '/setUser',
+    url: '/api/setUser',
     method: 'post',
     data: Info
   })
