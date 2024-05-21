@@ -5,7 +5,18 @@
   <div class="blog">
     <div class="article-list">
       <div class="title">文章列表</div>
-      <div class="list"></div>
+      <div class="list">
+        <ul>
+          <li
+            v-for="(item, index) in articleList"
+            :key="index"
+            @click="changeArticle(index)"
+            :class="activeId === index ? 'activeCss' : 'inactiveCss'"
+          >
+            <h3 class="titleCss">{{ item.title }}</h3>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="article-detail">
       <div class="title">{{ title }}</div>
@@ -36,6 +47,9 @@ const userStore = ref(userStatus())
 
 // 文章列表
 const articleList = ref([])
+const text = ref('')
+const activeId = ref(0)
+const title = ref('')
 
 const getArticleList = async () => {
   // 获取文章列表
@@ -45,21 +59,29 @@ const getArticleList = async () => {
   return res.data
 }
 
-const getArticleDetail = async (id: number) => {
+const getArticleDetail = async (text: string) => {
   // 获取文章详情
   console.log('获取文章详情')
-  let res = await getArticle(id)
+  title.value = articleList.value[activeId.value].title
+  let res = await getArticle(text)
+
   return res.data
 }
 
+const changeArticle = async (index: number) => {
+  console.log('切换文章')
+  activeId.value = index
+  text.value = await getArticleDetail(articleList.value[index].articleText)
+}
+
 // const text = ref('# sdfdsfdsf');
-const text = ref(
-  '功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需功能一览 快捷插入内容工具栏、编辑器浏览器全屏、页面内全屏等； 内置的白色主题和暗黑主题，支持绑定切换； 支持快捷键插入内容； 支持使用 prettier 格式化内容（使用 CDN 方式引入，只支持格式化 md 内容，可在代码内设置关闭）； 多语言，支持自行扩展语言； 粘贴上传图片，图片裁剪上传； 仅预览模式（不显示编辑器，只显示 md 预览内容，无额外监听）； 预览主题，内置defalut、vuepress、github 、cyanosis、mk-cute、smart-blue 6 种预览主题（不完全相同），支持自定义主题（参考文档 demo 页示例）； mermaid绘图（>=1.8.0），katex数学公式（>=1.9.0）； 自定义工具栏顺序或显示，自定义扩展工具栏（支持点击类型、下拉菜单类型及弹窗类型）等。 按需引用(>=4.0.0)。引用(>=4.0.0)。引用(>=4.0.0)。引用(>=4.0.0)。引用(>=4.0.0)。引用(>=4.0.0)。引用(>=4.0.0)。引用(>=4.0.0)。需引用(>=4.0.0)。需引用(>=4.0.0)。引用(>=4.0.0)。需引用(>=4.0.0)。需引用(>=4.0.0)。'
-)
-const title = ref('test')
 
 onMounted(async () => {
   articleList.value = await getArticleList()
+  if (articleList.value.length > 0) {
+    text.value = await getArticleDetail(articleList.value[0].articleText)
+  }
+  
 })
 </script>
 
@@ -91,6 +113,23 @@ header {
   border-radius: 20px;
   display: grid;
   grid-template-rows: 50px 1fr;
+}
+
+.article-list > li {
+  padding: 12px;
+  cursor: pointer;
+}
+
+.activeCss {
+  background-color: #ffd03f;
+}
+
+.inactiveCss {
+  :hover {
+    .titleCss {
+      color: #ffd03f;
+    }
+  }
 }
 
 .article-detail {

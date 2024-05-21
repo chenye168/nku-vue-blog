@@ -4,12 +4,14 @@ import { ref } from 'vue'
 
 const userStore = ref(userStatus())
 
+//获取当前网站域名
+
 const axios = Axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
   timeout: 60000, // 超时
-  baseURL: 'http://localhost:5173' // 请求接口地址，这里使用本项目地址，因为我们是前后端分离，后面需要在vue.config.js里面配置代理，实际请求得地址不是这个。
+  baseURL: 'http://100.67.63.80:5173' // 请求接口地址，这里使用本项目地址，因为我们是前后端分离，后面需要在vue.config.js里面配置代理，实际请求得地址不是这个。
 })
 
 // 请求拦截
@@ -32,7 +34,7 @@ axios.interceptors.request.use((req) => {
 //     if (response) {
 //       switch (response.status) {
 //         case 400:
-          
+
 //           break
 //         case 401:
 //           window.$vm.$message.error({ message: '尚未登录请重新登录' })

@@ -10,6 +10,8 @@ import itertools
 import base64
 import json
 
+import time
+
 # 生成随机数
 def createRandomInt(length, tableName):
     db = sqlite3.connect('db.sqlite')
@@ -140,18 +142,18 @@ def getUserArticle():
     
 
     # 判断用户是否存在
-    if cursor.execute(f'select count(*) from users where authorId = {authorId}').fetchone()[0] == 0:
+    if cursor.execute(f'select count(*) from users where userId = {authorId}').fetchone()[0] == 0:
         db.close()
         return '用户不存在', 400
     
-    cursor.execute(f'select articleId, authorId, articletitle from articles where authorId = {authorId}')
+    cursor.execute(f'select articleId, authorId, articletitle, articleText from articles where authorId = {authorId}')
     data = cursor.fetchall()
     db.close()
     
     res = []
     for item in data:
 
-        res.append({'articleId': item[0], 'userId': item[1], 'content': item[2]})
+        res.append({'articleId': item[0], 'userId': item[1], 'title': item[2], 'articleText': item[3]})
     
     # 状态码设置
 
@@ -375,12 +377,41 @@ def checkUser():
     db = sqlite3.connect('db.sqlite')
     cursor = db.cursor()
     # 判断用户是否存在
-    if cursor.execute(f'select count(*) from users where userName = {userName}').fetchone()[0] == 0:
+    if cursor.execute(f'select count(*) from users where userName = "{userName}"').fetchone()[0] == 0:
         return '用户不存在', 400
     # 获取用户id
-    cursor.execute(f'select userId from users where userName = {userName}')
+    cursor.execute(f'select userId from users where userName = "{userName}"')
     userId = cursor.fetchone()[0]
     return {"userId": userId}, 200
+
+# 文件上传功能
+@app.route('/upload', methods=['POST'])
+def upload():
+
+    f = request.files['file']
+    basepath = path.dirname(__file__)
+
+    # 判断文件类型
+    
+    fileType = ''
+    # 文件是图片
+    if f.filename.split('.')[-1] in ['jpg', 'jpeg', 'png', 'gif']:
+        fileType = 'img'
+    # 文件是markdown文档
+    elif f.filename.split('.')[-1] in ['md']:
+        fileType = 'md'
+    else:
+        return '文件类型错误', 400
+
+    # 文件名=base64加密+时间戳取前10位
+    filename = base64.b64encode((f.filename.split('.')[0] + str(int(time.time()))).encode()).decode()[:10] + '.' + f.filename.split('.')[-1]
+    upload_path = path.join(basepath, 'src', fileType, filename)
+    f.save(upload_path)
+
+    return {
+        'msg': '上传成功',
+        'path': filename
+    }, 200
 
 if __name__ == '__main__':
     main()
