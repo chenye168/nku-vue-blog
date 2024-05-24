@@ -12,7 +12,7 @@
           <div class="num">{{ index + 1 }}</div>
           <router-link :to="'/' + item['userName']" class="author">
             <dt class="avatar">
-              <img :src="item.avatar" alt="avatar" />
+              <img :src="'http://src.cycodes.cn/src/img/' + item.avatar" alt="avatar" />
             </dt>
             <dd>{{ item['userName'] }}</dd>
           </router-link>
@@ -96,8 +96,6 @@ onMounted(async () => {
   grid-area: rank;
 }
 
-
-
 .rankTitle {
   font-size: 30px;
   color: #333;
@@ -117,7 +115,6 @@ onMounted(async () => {
   font-size: 25px;
 }
 
-
 @media (max-width: 800px) {
   .gradient {
     grid-template-columns: 1fr;
@@ -126,11 +123,10 @@ onMounted(async () => {
       'helloWorld'
       'rank';
   }
-  .helloWorld{
+  .helloWorld {
     font-size: 35px;
-  
   }
-  .rankList{
+  .rankList {
     font-size: 20px;
     height: 85%;
   }
