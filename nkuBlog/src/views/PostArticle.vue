@@ -63,7 +63,9 @@ const switchOut = (n: boolean) => {
 const userStore = ref(userStatus())
 
 // 文章列表
-const articleList = ref([])
+const articleList = ref<
+  { title: string; datetime: string; articleText: string; articleId: number }[]
+>([])
 const text = ref('')
 const activeId = ref(0)
 const title = ref('')
@@ -150,12 +152,14 @@ const saveArticle = async () => {
   console.log('上传文章')
   //文章转换为markdown格式
   let articleText = text.value
-
+  console.log(articleText)
   // 创建一个 Blob 对象，内容为文章的文本
   let blob = new Blob([articleText], { type: 'text/markdown' })
 
   // 创建一个 File 对象，名称为 'article.md'，内容为上面创建的 Blob 对象
-  let file = new File([blob], 'article.md')
+  //创建随机文件名
+  let filename = Math.random().toString(36).substr(2) + '.md'
+  let file = new File([blob], filename)
 
   let formData = new FormData()
   formData.append('file', file)
@@ -218,11 +222,11 @@ const updateArticle = async (articleUrl: string) => {
 }
 
 //上传图片
-const onUploadImg = async (files, callback) => {
+const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
   console.log('上传图片')
 
   const responses = await Promise.all(
-    files.map((file) => {
+    files.map((file: File) => {
       let formData = new FormData()
       formData.append('file', file)
 
@@ -314,10 +318,12 @@ section {
 }
 
 .list {
+  margin-top: 10px;
+  margin-bottom: 10px;
   background-color: white;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  height: 100%;
+
   overflow: auto;
 }
 

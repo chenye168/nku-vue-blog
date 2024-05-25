@@ -46,7 +46,7 @@ const switchOut = (n: boolean) => {
 const userStore = ref(userStatus())
 
 // 文章列表
-const articleList = ref([])
+const articleList = ref<{title: string,articleText: string}[]>([])
 const text = ref('')
 const activeId = ref(0)
 const title = ref('')
@@ -159,9 +159,16 @@ header {
 }
 
 .list {
+  margin-top: 10px;
   background-color: white;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  overflow: auto;
+}
+
+/* 自定义滚动条样式 */
+.list::-webkit-scrollbar {
+  display: none;
 }
 
 .md-editor {
