@@ -38,7 +38,7 @@ const toLogin = () => {
 <style scoped lang="scss">
 main {
   /* 使背景全屏 */
-  z-index: 9999999;
+  z-index: 100;
   width: 100%;
   height: 100%;
   top: 0;

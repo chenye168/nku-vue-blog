@@ -12,7 +12,7 @@
           <div class="num">{{ index + 1 }}</div>
           <router-link :to="'/' + item['userName']" class="author">
             <dt class="avatar">
-              <img :src="item.avatar" alt="avatar" />
+              <img :src="'http://src.cycodes.cn/src/img/' + item.avatar" alt="avatar" />
             </dt>
             <dd>{{ item['userName'] }}</dd>
           </router-link>
@@ -89,14 +89,11 @@ onMounted(async () => {
   position: absolute;
   margin: auto;
   text-align: center;
-
   border-radius: 10px;
   background-color: rgba(240, 248, 255, 0.5);
   box-shadow: 0 0 50px rgba(240, 248, 255, 0.5); /* 过度背景 */
   grid-area: rank;
 }
-
-
 
 .rankTitle {
   font-size: 30px;
@@ -107,16 +104,18 @@ onMounted(async () => {
 
 .rankList {
   padding: 0 30px 20px;
-  position: relative;
+  position: absolute;
+  
   overflow: auto;
-  margin-top: 5%;
-  height: 88%;
+  top: 60px;
+  bottom: 0;
+  left: 5%;
+  right: 5%;
   /* 自定义滚动条样式 */
   scrollbar-width: thin;
   scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
   font-size: 25px;
 }
-
 
 @media (max-width: 800px) {
   .gradient {
@@ -126,11 +125,10 @@ onMounted(async () => {
       'helloWorld'
       'rank';
   }
-  .helloWorld{
+  .helloWorld {
     font-size: 35px;
-  
   }
-  .rankList{
+  .rankList {
     font-size: 20px;
     height: 85%;
   }
