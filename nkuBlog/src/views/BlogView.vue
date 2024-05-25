@@ -81,7 +81,6 @@ onMounted(async () => {
   if (articleList.value.length > 0) {
     text.value = await getArticleDetail(articleList.value[0].articleText)
   }
-  
 })
 </script>
 

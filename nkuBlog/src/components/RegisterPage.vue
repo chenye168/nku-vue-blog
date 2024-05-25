@@ -125,7 +125,6 @@
 <script lang="ts" setup>
 import { ref, defineProps, reactive, nextTick, computed } from 'vue'
 import { registerUser } from '@/api/RegisterUser'
-
 import { ElMessage, ElInput } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
