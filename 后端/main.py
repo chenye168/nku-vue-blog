@@ -173,6 +173,7 @@ def setUser():
 
     if((userName == None or userName=='') and (userPassword == None or userPassword=='') and (userId == None or userId=='')):
         return '参数错误', 400
+    
     db = sqlite3.connect('db.sqlite')
     cursor = db.cursor()
 
