@@ -15,6 +15,9 @@
     :show-file-list="false"
     :on-success="handleAvatarSuccess1"
     :before-upload="beforeAvatarUpload"
+    v-loading.fullscreen.lock="loading"
+    element-loading-text="Uploading..."
+
   >
     <img v-if="avatarImageUrl" :src="avatarImageUrl" class="avatar" style="width: 90px; height: 90px; border-radius: 100%;">
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -137,6 +140,8 @@ const props = defineProps({
   }
 })
 
+const loading = ref(false)
+
 
 const formRef = ref<FormInstance | null>(null)
 const form = ref({
@@ -219,6 +224,7 @@ const back = () => {
 //头像框上传
 
 const updateAvatar = computed(() => {
+  
   return 'http://src.cycodes.cn/src/img/'+form.value.photo
 })
 
@@ -233,15 +239,17 @@ const wxImageUrl = ref(updateWxqrcode)
 const handleAvatarSuccess1: UploadProps['onSuccess'] = (
   response
 ) => {
-  console.log(response)
+  // console.log(response)
   form.value.photo = response.path;
+  loading.value = false
 }
 
 const handleAvatarSuccess2: UploadProps['onSuccess'] = (
   response
 ) => {
-  console.log(response)
+  // console.log(response)
   form.value.wechat.qrCode = response.path;
+  loading.value = false
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -252,6 +260,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     ElMessage.error('Avatar picture size can not exceed 2MB!')
     return false
   }
+  loading.value = true
   return true
 }
 

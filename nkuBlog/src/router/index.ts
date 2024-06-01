@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routerStatus } from '@/stores/routerStatus'
 import { userStatus } from '@/stores/userStatus'
+import { ElMessageBox } from 'element-plus'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,12 +14,40 @@ const router = createRouter({
     {
       path: '/changeInfo',
       name: 'change',
-      component: () => import('@/views/ChangeInfo.vue')
+      component: () => import('@/views/ChangeInfo.vue'),
+      beforeEnter: (to, from, next) => {
+        const userStore = userStatus()
+        if (userStore.hasLogin) {
+          next()
+        } else {
+          ElMessageBox.confirm('用户未登录', '提示', {
+            confirmButtonText: '登录',
+            showCancelButton: false,
+            type: 'warning'
+          }).then(() => {
+            next({ name: 'userlogin' })
+          })
+        }
+      }
     },
     {
       path: '/postArticle',
       name: 'post',
-      component: () => import('@/views/PostArticle.vue')
+      component: () => import('@/views/PostArticle.vue'),
+      beforeEnter: (to, from, next) => {
+        const userStore = userStatus()
+        if (userStore.hasLogin) {
+          next()
+        } else {
+          ElMessageBox.confirm('用户未登录', '提示', {
+            confirmButtonText: '登录',
+            showCancelButton: false,
+            type: 'warning'
+          }).then(() => {
+            next({ name: 'userlogin' })
+          })
+        }
+      }
     },
     {
       path: '/:user',
@@ -57,7 +86,6 @@ const router = createRouter({
         }, 900)
       }
     },
-
     {
       path: '/:user/about',
       name: 'about',
@@ -110,6 +138,11 @@ const router = createRouter({
         userStore.lastUrl = from.fullPath
         next()
       }
+    },
+    {
+      path: '/:catchAll(.*)',
+      name: '404',
+      component: () => import('@/views/NotFound.vue')
     }
   ]
 })

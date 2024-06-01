@@ -10,7 +10,7 @@
       <div class="rankList">
         <div class="item" v-for="(item, index) in state.userList" :key="index">
           <div class="num">{{ index + 1 }}</div>
-          <router-link :to="'/' + item['userName']" class="author">
+          <router-link :to="'/' + item['userName'] + '/home'" class="author">
             <dt class="avatar">
               <img :src="'http://src.cycodes.cn/src/img/' + item.avatar" alt="avatar" />
             </dt>
@@ -45,7 +45,7 @@ onMounted(async () => {
   background-size: 600% 600%;
   animation: gradientBG 5s ease infinite;
   font-family: 'erikos';
-  z-index: 99999;
+  z-index: 9;
   text-align: center;
 
   /* 使背景全屏 */
