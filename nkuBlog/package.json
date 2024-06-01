@@ -13,8 +13,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vavt/md-editor-extension": "^3.0.0",
+    "@vavt/v3-extension": "^1.2.2",
     "axios": "^1.6.8",
     "element-plus": "^2.7.3",
+    "md-editor-v3": "^4.15.6",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.4.21",

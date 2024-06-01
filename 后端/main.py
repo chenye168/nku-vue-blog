@@ -106,7 +106,7 @@ def login():
             'token': access_token
         })
     else:
-        return '登录失败', 400
+        return '密码错误', 500
 
 @app.route('/getUserList')
 def getUserList():
@@ -144,16 +144,16 @@ def getUserArticle():
     # 判断用户是否存在
     if cursor.execute(f'select count(*) from users where userId = {authorId}').fetchone()[0] == 0:
         db.close()
-        return '用户不存在', 400
+        return '用户不存在', 411
     
-    cursor.execute(f'select articleId, authorId, articletitle, articleText from articles where authorId = {authorId}')
+    cursor.execute(f'select articleId, authorId, articletitle, articleText, date from articles where authorId = {authorId} order by date desc')
     data = cursor.fetchall()
     db.close()
     
     res = []
     for item in data:
 
-        res.append({'articleId': item[0], 'userId': item[1], 'title': item[2], 'articleText': item[3]})
+        res.append({'articleId': item[0], 'userId': item[1], 'title': item[2], 'articleText': item[3], 'datetime':item[4]})
     
     # 状态码设置
 
@@ -173,7 +173,6 @@ def setUser():
 
     if((userName == None or userName=='') and (userPassword == None or userPassword=='') and (userId == None or userId=='')):
         return '参数错误', 400
-    
     db = sqlite3.connect('db.sqlite')
     cursor = db.cursor()
 
@@ -184,24 +183,24 @@ def setUser():
         #判断用户是否存在
         cursor.execute(f'select count(*) from users where userName = "{userName}"')
         if cursor.fetchone()[0] != 0:
-            return '用户已存在', 400
+            return '用户已存在', 410
         #生成用户id
         userId = createRandomInt(6, 'users')
-        cursor.execute(f'insert into users(userId, userName, userPassword) values({userId}, "{userName}", "{userPassword}")')
+        cursor.execute(f'insert into users(userId, userName, userPassword) values("{userId}", "{userName}", "{userPassword}")')
     else:
         #修改用户
         #验证用户
 
         if(token == None):
-            return '未登录', 400
+            return '未登录', 401
         
         # 验证用户
 
 
         userId = get_jwt_identity()
 
-        if str(userId) != request.json.get('userId'):
-            return '无权限', 400
+        if str(userId) != str(request.json.get('userId')):
+            return '无权限', 403
         
     # 构建需要修改的数据
 
@@ -218,11 +217,12 @@ def setUser():
                 res.append(['wechat_id', wechat.get('id')])
                 res.append(['wechat_qrCode', wechat.get('qrCode')])
             else:
+                if request.json.get(item) == '':
+                    continue
                 res.append([item, request.json.get(item)])
 
     # # 修改数据   
     for item in res:
-
         cursor.execute(f'update users set {item[0]} = "{item[1]}" where userId = {userId}')
     db.commit()
     
@@ -241,7 +241,7 @@ def getUserInfo():
     cursor = db.cursor()
     # 判断用户是否存在
     if cursor.execute(f'select count(*) from users where userId = {userId}').fetchone()[0] == 0:
-        return '用户不存在', 400
+        return '用户不存在', 403
     
     cursor.execute(f'select userName, userId, photo, label, address, mail, github, wechat_id, wechat_qrCode from users where userId = {userId}')
     data = cursor.fetchall()
@@ -276,9 +276,9 @@ def getArticle():
     cursor = db.cursor()
     # 判断用户是否存在
     if cursor.execute(f'select count(*) from articles where articleId = {articleId}').fetchone()[0] == 0:
-        return '文章不存在', 400
+        return '文章不存在', 412
     
-    cursor.execute(f'select articleTitle, authorname, authorId, articleText  from articles join users on articles.authorId = users.userId where articleId = {articleId}')
+    cursor.execute(f'select articleTitle, authorname, authorId, articleText, date from articles join users on articles.authorId = users.userId where articleId = {articleId}')    
     data = cursor.fetchall()
     db.close()
     
@@ -324,7 +324,7 @@ def setArticle():
         # 判断用户权限
         cursor.execute(f'select authorId from articles where articleId = {articleId}')
         if cursor.fetchone()[0] != userId:
-            return '无权限', 400
+            return '无权限', 403
         cursor.execute(f'delete from articles where articleId = {articleId}') 
 
     elif (articleTitle != None or articleText != None) and articleId != None:
@@ -335,12 +335,12 @@ def setArticle():
         # 判断文章是否存在
         cursor.execute(f'select count(*) from articles where articleId = {articleId}')
         if cursor.fetchone()[0] == 0:
-            return '文章不存在', 400
+            return '文章不存在', 412
         # 判断用户权限
         cursor.execute(f'select authorId from articles where articleId = {articleId}')
 
         if cursor.fetchone()[0] != userId:
-            return '无权限', 400
+            return '无权限', 403
         # 构建需要修改的数据
         res = []
         for item in request.json:
@@ -379,7 +379,7 @@ def checkUser():
     cursor = db.cursor()
     # 判断用户是否存在
     if cursor.execute(f'select count(*) from users where userName = "{userName}"').fetchone()[0] == 0:
-        return '用户不存在', 400
+        return '用户不存在', 411
     # 获取用户id
     cursor.execute(f'select userId from users where userName = "{userName}"')
     userId = cursor.fetchone()[0]
@@ -402,7 +402,7 @@ def upload():
     elif f.filename.split('.')[-1] in ['md']:
         fileType = 'md'
     else:
-        return '文件类型错误', 400
+        return '文件类型错误', 413
 
     # 文件名=base64加密+时间戳取前10位
     filename = base64.b64encode((f.filename.split('.')[0] + str(int(time.time()))).encode()).decode()[:10] + '.' + f.filename.split('.')[-1]
@@ -413,6 +413,50 @@ def upload():
         'msg': '上传成功',
         'path': filename
     }, 200
+
+# 获取评论
+@app.route('/getComment', methods=['GET'])
+def getComment():
+    authorId = request.args.get('authorId')
+    if authorId  == None:
+        return '参数错误', 400
+    
+    db = sqlite3.connect('db.sqlite')
+    cursor = db.cursor()
+    # 判断用户是否存在
+    if cursor.execute(f'select count(*) from users where userId = {authorId}').fetchone()[0] == 0:
+        return '用户不存在', 411
+    
+    
+    cursor.execute(f'select commentorName, commentText, date from Comments where userId = { authorId } order by date desc')
+    data = cursor.fetchall()
+    db.close()
+    
+    res = []
+    for item in data:
+        res.append({ 'commentorName': item[0], 'commentText': item[1], 'datetime': item[2]})
+    
+    # 状态码设置
+
+    return res, 200
+
+@app.route('/setComment', methods=['POST'])
+def setComment():
+    
+    # post请求
+    commentText = request.json.get('commentText')
+    authorId = request.json.get('authorId')
+    commentorName = request.json.get('commentorName')
+
+    if commentText == None or authorId == None or commentorName == None:
+        return '参数错误', 400
+    # 生成时间
+    dateTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    db = sqlite3.connect('db.sqlite')
+    cursor = db.cursor()
+    cursor.execute(f'insert into Comments(userId, commentText, commentorName, date) values({authorId}, "{commentText}", "{commentorName}", "{dateTime}")')
+    db.commit()
+    return '成功', 200
 
 if __name__ == '__main__':
     main()

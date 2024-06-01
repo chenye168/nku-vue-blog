@@ -74,7 +74,7 @@ const createTime = ref('')
 const getArticleList = async () => {
   // 获取文章列表
   console.log('获取文章列表')
-  let res = await getUserId(userStore.value.currentUser)
+  let res = await getUserId(userStore.value.userName)
   res = await getUserArticle(res.data.userId)
   return res.data
 }

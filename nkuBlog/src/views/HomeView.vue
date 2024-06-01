@@ -26,22 +26,22 @@ const currentUser = route.params.user
 onMounted(() => {
   setTimeout0 = setTimeout(() => {
     state.value.span1 = true
-    console.log('span1')
+    //console.log('span1')
   }, 1200)
 
   setTimeout1 = setTimeout(() => {
     state.value.span2 = true
-    console.log('span2')
+    //console.log('span2')
   }, 1400)
 
   setTimeout2 = setTimeout(() => {
     state.value.span3 = true
-    console.log('span3')
+    //console.log('span3')
   }, 1600)
 
   setTimeout3 = setTimeout(() => {
     state.value.cursor = true
-    console.log('cursor')
+    //console.log('cursor')
   }, 2400)
 })
 

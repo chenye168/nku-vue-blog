@@ -22,3 +22,13 @@ CREATE TABLE Articles (
     hasChange BOOLEAN DEFAULT FALSE, -- 布尔值，默认False  
     FOREIGN KEY (authorId) REFERENCES Users(userId) ON DELETE CASCADE -- 设置外键约束，并设置级联删除  
 ); 
+
+drop TABLE if exists Comments;
+CREATE TABLE Comments (  
+    commentId INTEGER UNSIGNED AUTO_INCREMENT, -- 自增主键
+    commentText TEXT NOT NULL, -- 评论内容  
+    date DATETIME NOT NULL, -- 评论时间  
+    userId INT UNSIGNED NOT NULL, -- 外键，关联到用户表的userId
+    commentorName VARCHAR(20) DEFAULT "游客", -- 外键，关联到用户表的userId
+    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE -- 设置外键约束，并设置级联删除  
+);

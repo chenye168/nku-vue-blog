@@ -23,15 +23,15 @@ export const userStatus = defineStore(
     return {
       hasLogin,
       token,
-      userName,
+      userName, //登录用户
       updateLogin,
-      currentUser,
-      lastUrl
+      currentUser, //访问用户
+      lastUrl //上次访问地址
     }
   },
   {
-    persist: true
+    persist: true //永久存储
   }
 )
 
-//永久存储
+
