@@ -53,6 +53,7 @@ const logout = () => {
   userStore.value.hasLogin = false
   userStore.value.userName = ''
   userStore.value.token = ''
+  router.push('/'+user+'/home')
 }
 
 const handleSelect = (key: string, keyPath: string[]) => {
