@@ -6,9 +6,7 @@
   <section>
     <div class="articleList">
       <div class="title">
-        文章列表<button style="position: absolute; right: 3%; top: 30%" @click="newArticle">
-          新建
-        </button>
+        文章列表
       </div>
       <div class="list">
         <ul>
@@ -21,6 +19,11 @@
             <h3 class="titleCss">{{ item.title }}</h3>
           </li>
         </ul>
+        <div>
+          <button class="newbutton" @click="newArticle">
+          新建
+        </button>
+        </div>
       </div>
     </div>
     <div class="articleInfo">
@@ -29,11 +32,15 @@
         <div>文章标题: <el-input v-model="title" /></div>
         <div>文章作者: {{ userStore.currentUser }}</div>
         <div>文章创建时间: {{ createTime }}</div>
-        <el-button type="danger" @click="deleteArticle" v-if="activeId !== -1">删除文章</el-button>
-        <el-button type="primary" @click="saveArticle">
+        <div>
+          <el-button type="danger" @click="deleteArticle" v-if="activeId !== -1">删除文章</el-button>
+        </div>
+        <div>
+          <el-button type="primary" @click="saveArticle">
           <span v-if="activeId == -1">上传文章</span>
           <span v-else>保存文章</span>
         </el-button>
+        </div>
       </div>
     </div>
     <MdEditor v-model="text" @onUploadImg="onUploadImg" />
@@ -269,6 +276,11 @@ section {
   grid-column-gap: 20px;
   place-items: center;
 }
+.newbutton{
+  position:relative;
+  left:47.5%;
+  top:0%;
+}
 
 .articleList,
 .articleInfo {
@@ -278,6 +290,7 @@ section {
   border-radius: 20px;
   display: grid;
   grid-template-rows: 50px 1fr;
+  overflow: auto;
 }
 
 .article-list > li {
@@ -336,5 +349,6 @@ section {
   background-color: white;
   width: 80%;
   margin: 0 auto;
+  overflow: auto;
 }
 </style>
