@@ -278,7 +278,7 @@ section {
 }
 .newbutton{
   position:relative;
-  left:47.5%;
+  left:46%;
   top:0%;
 }
 
