@@ -13,7 +13,7 @@
     </div>
     <div class="AboutMe cop">
       <div class="title">
-        <h3>Abort Me</h3>
+        <h3>About Me</h3>
       </div>
       <div class="city">
         <div class="mylabel">
@@ -40,7 +40,9 @@
         <h3>Comments</h3>
       </div>
       <div class="comments">
-        <Comment :userId="userInfo.userId" :currentUser="userStore.userName" v-if="loadFinish"/>
+        <div style="overflow: auto;">
+          <Comment :userId="userInfo.userId" :currentUser="userStore.userName" v-if="loadFinish" style="overflow: auto;"/>
+        </div>
       </div>
     </div>
     <div class="Mail cop">
