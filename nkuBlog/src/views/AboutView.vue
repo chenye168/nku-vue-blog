@@ -40,9 +40,7 @@
         <h3>Comments</h3>
       </div>
       <div class="comments">
-        <div style="overflow: auto;">
-          <Comment :userId="userInfo.userId" :currentUser="userStore.userName" v-if="loadFinish" style="overflow: auto;"/>
-        </div>
+        <Comment :userId="userInfo.userId" :currentUser="userStore.userName" v-if="loadFinish"/>
       </div>
     </div>
     <div class="Mail cop">

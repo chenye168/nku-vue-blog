@@ -4,9 +4,7 @@
   </header>
   <div class="blog">
     <div class="article-list">
-      <div class="title">
-        <div class="switchlist">文章列表</div>
-      </div>
+      <div class="title">文章列表</div>
       <div class="list">
         <ul>
           <li
@@ -47,7 +45,6 @@ const switchOut = (n: boolean) => {
 
 const userStore = ref(userStatus())
 
-
 // 文章列表
 const articleList = ref<{title: string,articleText: string}[]>([])
 const text = ref('')
@@ -85,7 +82,6 @@ onMounted(async () => {
     text.value = await getArticleDetail(articleList.value[0].articleText)
   }
 })
-
 </script>
 
 <style scoped>

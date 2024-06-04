@@ -6,8 +6,7 @@
   <section>
     <div class="articleList">
       <div class="title">
-        文章列表
-        <button class="newbutton" @click="newArticle">
+        文章列表<button style="position: absolute; right: 3%; top: 30%" @click="newArticle">
           +
         </button>
       </div>
@@ -22,24 +21,43 @@
             <h3 class="titleCss">{{ item.title }}</h3>
           </li>
         </ul>
-        <div>
-        </div>
       </div>
     </div>
     <div class="articleInfo">
       <div class="title">操作信息</div>
       <div class="detailInfo">
-        <div>文章标题: <el-input v-model="title" /></div>
-        <div>文章作者: {{ userStore.currentUser }}</div>
-        <div>文章创建时间: {{ createTime }}</div>
-        <div class="rightbutton">
-          <el-button type="danger" @click="deleteArticle" v-if="activeId !== -1">删除文章</el-button>
+        <div style="font-size: 20px">文章标题: <el-input v-model="title" /></div>
+        <div class="publishInfo">文章作者: {{ userStore.currentUser }}</div>
+        <div class="publishInfo">文章创建时间: {{ createTime }}</div>
+        <div class="rightButton">
+          <span v-if="activeId == -1">
+            <div class="picInsert">
+            <div class="picDisplay">
+              <img src="/public/article.png">
+            </div>
+            <div>
+            <el-button type="primary" @click="saveArticle">上传文章</el-button>
+            </div>
+          </div>
+          </span>
+          <span v-else>
+            <div class="picInsert">
+            <div class="picDisplay">
+              <img src="/public/savebutton.png">
+            </div>
+            <div>
+            <el-button type="primary" @click="saveArticle">保存文章</el-button>
+            </div>
+            </div>
+            <div class="picInsert">
+            <div class="picDisplay">
+              <img src="/public/deletebutton.png">
+            </div>
+          <div>
+            <el-button type="danger" @click="deleteArticle" v-if="activeId !== -1">删除文章</el-button>
+          </div>
         </div>
-        <div class="rightbutton">
-          <el-button type="primary" @click="saveArticle">
-          <span v-if="activeId == -1">上传文章</span>
-          <span v-else>保存文章</span>
-        </el-button>
+          </span>
         </div>
       </div>
     </div>
@@ -276,11 +294,6 @@ section {
   grid-column-gap: 20px;
   place-items: center;
 }
-.newbutton{
-  position:absolute;
-  right:7%;
-  top:35%;
-}
 
 .articleList,
 .articleInfo {
@@ -290,7 +303,6 @@ section {
   border-radius: 20px;
   display: grid;
   grid-template-rows: 50px 1fr;
-  overflow: auto;
 }
 
 .article-list > li {
@@ -351,8 +363,33 @@ section {
   margin: 0 auto;
   overflow: auto;
 }
-.rightbutton
+.rightButton{
+  margin-top: 10px;
+  font-size: 20px;
+  display:felx;
+  flex-direction: column;
+  justify-content: center;
+}
+.publishInfo{
+  position: relative;
+  text-align:center;
+  margin-top:5px;
+  font-size: 20px;
+}
+img{
+  max-height: 30px;
+  max-width: 30px;
+}
+.picInsert
 {
-  margin-top: 5px;
+  gap:5px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.picDisplay{
+  height:30px;
+  width:30px;
+  margin-top:5px;
 }
 </style>
