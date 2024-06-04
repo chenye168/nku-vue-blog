@@ -13,7 +13,7 @@
     </div>
     <div class="AboutMe cop">
       <div class="title">
-        <h3>Abort Me</h3>
+        <h3>About Me</h3>
       </div>
       <div class="city">
         <div class="mylabel">
