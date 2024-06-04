@@ -5,9 +5,9 @@
   <div class="blog">
     <div class="article-list">
       <div class="title">
-        <div class="switchlist" @click="onClick">文章列表</div>
+        <div class="switchlist">文章列表</div>
       </div>
-      <div class="list" v-show="showDetail">
+      <div class="list">
         <ul>
           <li
             v-for="(item, index) in articleList"
@@ -47,11 +47,6 @@ const switchOut = (n: boolean) => {
 
 const userStore = ref(userStatus())
 
-//点击文章列表按钮显示/隐藏文章列表
-const showDetail=ref(false);
-const onClick = () => {
-  showDetail.value = !showDetail.value ;
-};
 
 // 文章列表
 const articleList = ref<{title: string,articleText: string}[]>([])

@@ -7,6 +7,9 @@
     <div class="articleList">
       <div class="title">
         文章列表
+        <button class="newbutton" @click="newArticle">
+          +
+        </button>
       </div>
       <div class="list">
         <ul>
@@ -20,9 +23,6 @@
           </li>
         </ul>
         <div>
-          <button class="newbutton" @click="newArticle">
-          新建
-        </button>
         </div>
       </div>
     </div>
@@ -32,10 +32,10 @@
         <div>文章标题: <el-input v-model="title" /></div>
         <div>文章作者: {{ userStore.currentUser }}</div>
         <div>文章创建时间: {{ createTime }}</div>
-        <div>
+        <div class="rightbutton">
           <el-button type="danger" @click="deleteArticle" v-if="activeId !== -1">删除文章</el-button>
         </div>
-        <div>
+        <div class="rightbutton">
           <el-button type="primary" @click="saveArticle">
           <span v-if="activeId == -1">上传文章</span>
           <span v-else>保存文章</span>
@@ -277,9 +277,9 @@ section {
   place-items: center;
 }
 .newbutton{
-  position:relative;
-  left:46%;
-  top:0%;
+  position:absolute;
+  right:7%;
+  top:35%;
 }
 
 .articleList,
@@ -350,5 +350,9 @@ section {
   width: 80%;
   margin: 0 auto;
   overflow: auto;
+}
+.rightbutton
+{
+  margin-top: 5px;
 }
 </style>
