@@ -251,6 +251,7 @@ li:hover
   }
   .back:hover{
     text-decoration: underline;
+    color:black;
   }
 }
 @media screen and (min-width: 767px) 
