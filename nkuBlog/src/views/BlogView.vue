@@ -13,21 +13,20 @@
             @click="changeArticle(index)"
             :class="activeId === index ? 'activeCss' : 'inactiveCss'"
           >
-            <h3 class="titleCss">{{ item.title }}
-            <span class="publish-time">{{ formatDate(new Date(item.datetime)) }}</span>
-          </h3>
+            <h3 class="titleCss">{{ item.title }}</h3>
+            <div class="publish-time">{{ formatDate(new Date(item.datetime)) }}</div>
           </li>
         </ul>
       </div>
     </div>
-    <div class="article-detail" :class="{ 'hidden': !showArticleDetail }">
+    <div class="article-detail" :class="{ hidden: !showArticleDetail }">
       <div class="title">{{ title }}</div>
       <MdPreview v-model="text" />
     </div>
-    <button class="back" id="backButton" @click="hideArticleDetail" v-if="showArticleDetail">««</button>
-</div>
-
- 
+    <button class="back" id="backButton" @click="hideArticleDetail" v-if="showArticleDetail">
+      ««
+    </button>
+  </div>
 
   <Switch v-if="switchin" :type="'enter'" :callback="switchOut" />
 </template>
@@ -51,14 +50,14 @@ const switchOut = (n: boolean) => {
 const userStore = ref(userStatus())
 
 // 文章列表
-const articleList = ref<{title: string,articleText: string,datetime: Date}[]>([])
+const articleList = ref<{ title: string; articleText: string; datetime: Date }[]>([])
 const text = ref('')
 const activeId = ref(0)
 const title = ref('')
 
 const getArticleList = async () => {
   // 获取文章列表
-  console.log('获取文章列表')
+  //console.log('获取文章列表')
   let res = await getUserId(userStore.value.currentUser)
   res = await getUserArticle(res.data.userId)
   return res.data
@@ -66,7 +65,7 @@ const getArticleList = async () => {
 
 const getArticleDetail = async (text: string) => {
   // 获取文章详情
-  console.log('获取文章详情')
+  //console.log('获取文章详情')
   title.value = articleList.value[activeId.value].title
   let res = await getArticle(text)
 
@@ -75,11 +74,10 @@ const getArticleDetail = async (text: string) => {
 
 const showArticleDetail = ref(false)
 const changeArticle = async (index: number) => {
-  console.log('切换文章')
+  //console.log('切换文章')
   activeId.value = index
   text.value = await getArticleDetail(articleList.value[index].articleText)
-  showArticleDetail.value = true; 
-
+  showArticleDetail.value = true
 }
 
 // const text = ref('# sdfdsfdsf');
@@ -91,20 +89,17 @@ onMounted(async () => {
   }
 })
 const formatDate = (date: Date) => {
-  const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  return date.toLocaleDateString('en-US', options);
+  const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' }
+  return date.toLocaleDateString('en-US', options)
 }
 const hideArticleDetail = () => {
-  showArticleDetail.value = false; // 点击按钮后隐藏文章详情
+  showArticleDetail.value = false // 点击按钮后隐藏文章详情
 }
 </script>
 
 <style scoped>
-header {
-  width: 100%;
-  padding: 0%;
-  margin: 0%;
-}
+
+
 
 .blog {
   width: 100%;
@@ -127,26 +122,24 @@ header {
   border-radius: 20px;
   display: grid;
   grid-template-rows: 50px 1fr;
-
 }
 
 .article-list > li {
   padding: 12px;
   cursor: pointer;
 }
-li
-{
+li {
   list-style-type: none;
-  width:80%;
+  width: 80%;
   margin-bottom: 2%;
   border-radius: 5px;
-  font-size:1.0em;
+  font-size: 1em;
 }
-li:hover
-{
-  background-color:#ffd64f9d;
+li:hover {
+  background-color: #ffd64f9d;
   text-decoration: underline;
   transition-duration: 50ms;
+  text-decoration: none;
 }
 .activeCss {
   background-color: #ffd03f;
@@ -156,7 +149,10 @@ li:hover
   :hover {
     .titleCss {
       color: #ffd03f;
+      /* 取消下划线 */
+      text-decoration: none;
     }
+    text-decoration: none;
   }
 }
 
@@ -193,9 +189,9 @@ li:hover
   border-bottom-right-radius: 20px;
   overflow: auto;
 }
-.publish-time{
-  font-size:0.8em;
-  color:grey;
+.publish-time {
+  font-size: 0.8em;
+  color: grey;
 }
 /* 自定义滚动条样式 */
 .list::-webkit-scrollbar {
@@ -214,49 +210,45 @@ li:hover
 }
 @media screen and (max-width: 767px) {
   /* 在手机端隐藏.article-detail */
-  .hidden
-  {
+  .hidden {
     display: none;
   }
 
-  .article-detail
-  {
-    position: relative;
-    right: 20%;
-    width:100%;
-    height: 75%;
-    margin-bottom: 10%;
-    margin-top: 10%;
+  .article-detail {
+    position: absolute;
+    left: 7.5%;
+    right: 7.5%;
+    width: 75%;
+    top: 10%;
+    bottom: 10%;
   }
-  .article-list
-  {
-    position: relative;
-    left: 50%;
-    width:250%;
-    height: 75%;
-    margin-bottom: 10%;
-    margin-top: 20%;
+  .article-list {
+    position: absolute;
+    left: 7.5%;
+    right: 7.5%;
+
+    top: 10%;
+    bottom: 10%;
   }
-  .back{
+  .back {
     position: fixed;
-    border-style:none;
-    width:10%;
-    height:3%;
-    left:16%;
-    top:9%;
-    color:grey;
-    font-size:1.5em;
-    font-family:"SimHei", Arial, sans-serif;
+    border-style: none;
+    width: 10%;
+    height: 3%;
+    left: 16%;
+    top: 9%;
+    color: grey;
+    font-size: 1.5em;
+    font-family: 'SimHei', Arial, sans-serif;
     z-index: 1;
   }
-  .back:hover{
+  .back:hover {
     text-decoration: underline;
-    color:black;
+    color: black;
   }
 }
-@media screen and (min-width: 767px) 
-{
-  .back{
+@media screen and (min-width: 767px) {
+  .back {
     display: none;
   }
 }

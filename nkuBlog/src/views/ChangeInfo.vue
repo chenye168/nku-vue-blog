@@ -9,7 +9,7 @@
       <el-form ref="formRef" :model="form" label-width="100px" class="demo-ruleForm">
         <el-upload
           class="avatar-uploader"
-          action="http://localhost:5173/api/upload"
+          action="/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess1"
           :before-upload="beforeAvatarUpload"
@@ -73,7 +73,7 @@
         <el-form-item label="Wechat QR Code" prop="wechat.qrCode">
           <el-upload
             class="avatar-uploader"
-            action="http://localhost:5173/api/upload"
+            action="/api/upload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess2"
             :before-upload="beforeAvatarUpload"
@@ -125,7 +125,7 @@ onMounted(() => {
 const getUser = async () => {
   form.value.userName = userStore.value.userName
   let res1 = await getUserId(userStore.value.userName)
-  console.log(res1.data)
+  //console.log(res1.data)
   form.value.userId = res1.data['userId']
   let res2 = await getUserInfo(res1.data['userId'])
   form.value = res2.data[0]
@@ -165,24 +165,24 @@ async function registe() {
 //头像框上传
 
 const updateAvatar = computed(() => {
-  return 'http://src.cycodes.cn/src/img/' + form.value.photo
+  return '/srcp/img/' + form.value.photo
 })
 
 const updateWxqrcode = computed(() => {
   if (!form.value.wechat.qrCode) return ''
-  return 'http://src.cycodes.cn/src/img/' + form.value.wechat.qrCode
+  return '/srcp/img/' + form.value.wechat.qrCode
 })
 
 const avatarImageUrl = ref(updateAvatar)
 const wxImageUrl = ref(updateWxqrcode)
 
 const handleAvatarSuccess1: UploadProps['onSuccess'] = (response) => {
-  console.log(response)
+  //console.log(response)
   form.value.photo = response.path
 }
 
 const handleAvatarSuccess2: UploadProps['onSuccess'] = (response) => {
-  console.log(response)
+  //console.log(response)
   form.value.wechat.qrCode = response.path
 }
 

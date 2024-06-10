@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import HeaderNav from '@/components/HeaderNav.vue'
 import Switch from '@/components/SwitchTransition.vue'
+import Footer from '@/components/FootFooter.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-let setTimeout0: any, setTimeout1: any, setTimeout2: any, setTimeout3: any;
+let setTimeout0: any, setTimeout1: any, setTimeout2: any, setTimeout3: any
 const state = ref({
   span1: false,
   span2: false,
@@ -12,12 +13,10 @@ const state = ref({
   cursor: false
 })
 
-
 const switchin = ref(true)
 const switchOut = (n: boolean) => {
   switchin.value = n
 }
-
 
 const route = useRoute()
 // 访问的用户
@@ -51,7 +50,6 @@ onUnmounted(() => {
   clearTimeout(setTimeout2)
   clearTimeout(setTimeout3)
 })
-
 </script>
 
 <template>
@@ -59,17 +57,18 @@ onUnmounted(() => {
     <HeaderNav />
   </header>
   <div class="text">
-      <span :class="{ animate: state.span1 }">Hey There</span><br />
-      <span :class="{ animate: state.span2 }">I'm {{ currentUser }}</span><br />
-      <span :class="{ animate: state.span3 }"
-        >( σ'ω')σ<strong>#Skr</strong><i :class="{ cursor: state.cursor}"></i
-      ></span>
-    </div>
+    <span :class="{ animate: state.span1 }">Hey There</span><br />
+    <span :class="{ animate: state.span2 }">I'm {{ currentUser }}</span
+    ><br />
+    <span :class="{ animate: state.span3 }"
+      >( σ'ω')σ<strong>#Skr</strong><i :class="{ cursor: state.cursor }"></i
+    ></span>
+  </div>
+  <Footer />
   <Switch v-if="switchin" :type="'enter'" :callback="switchOut" />
 </template>
 
 <style scoped lang="scss">
-
 $whilte0: rgba(255, 255, 255, 0);
 $whilte1: rgba(255, 255, 255, 1);
 $color_main: #ffd03f;
@@ -175,33 +174,32 @@ header {
   }
 }
 
-
 @media screen and (max-width: 1440px) {
-  .text{
-      font-size: 96px
+  .text {
+    font-size: 96px;
   }
 }
 
 @media screen and (max-width: 960px) {
-  .text{
-      font-size: 80px
+  .text {
+    font-size: 80px;
   }
 }
 @media screen and (max-width: 768px) {
-  .text{
-      font-size: 60px
+  .text {
+    font-size: 60px;
   }
 }
 @media screen and (max-width: 480px) {
-  .text{
-      font-size: 42px;
-      padding-top: 19rem;
+  .text {
+    font-size: 42px;
+    padding-top: 10rem;
   }
 }
 @media screen and (max-width: 360px) {
-  .text{
-      font-size: 32px;
-      padding-top: 16rem;
+  .text {
+    font-size: 32px;
+    padding-top: 8rem;
   }
 }
 </style>

@@ -11,7 +11,7 @@
     <div class="header" v-if="active === 0">Register</div>
     <el-upload
     class="avatar-uploader"
-    action="http://localhost:5173/api/upload"
+    action="/api/upload"
     :show-file-list="false"
     :on-success="handleAvatarSuccess1"
     :before-upload="beforeAvatarUpload"
@@ -85,7 +85,7 @@
     <el-form-item label="Wechat QR Code" prop="wechat.qrCode">
       <el-upload
         class="avatar-uploader"
-        action="http://localhost:5173/api/upload"
+        action="/api/upload"
         :show-file-list="false"
         :on-success="handleAvatarSuccess2"
         :before-upload="beforeAvatarUpload"
@@ -225,12 +225,12 @@ const back = () => {
 
 const updateAvatar = computed(() => {
   
-  return 'http://src.cycodes.cn/src/img/'+form.value.photo
+  return '/srcp/img/'+form.value.photo
 })
 
 const updateWxqrcode = computed(() => {
   if (!form.value.wechat.qrCode) return ''
-  return 'http://src.cycodes.cn/src/img/'+form.value.wechat.qrCode
+  return '/srcp/img/'+form.value.wechat.qrCode
 })
 
 const avatarImageUrl = ref(updateAvatar)

@@ -22,7 +22,7 @@
             :key="index"
             class="cloud"
             :style="{ left: getLeft(index), top: getTop(index) }"
-            ><img src="@/img/aboutbg.png" alt="" /> <strong>{{ item }}</strong></span
+            ><img src="@/img/aboutbg.png" alt="" /> <strong :style="{'font-size': getFontSize(index) }">{{ item }}</strong></span
           >
         </div>
       </div>
@@ -40,7 +40,7 @@
         <h3>Comments</h3>
       </div>
       <div class="comments">
-        <Comment :userId="userInfo.userId" :currentUser="userStore.userName" v-if="loadFinish"/>
+        <Comment :userId="userInfo.userId" :currentUser="userStore.userName" v-if="loadFinish" />
       </div>
     </div>
     <div class="Mail cop">
@@ -79,7 +79,7 @@
 import HeaderNav from '@/components/HeaderNav.vue'
 import Switch from '@/components/SwitchTransition.vue'
 import Comment from '@/components/CommentModule.vue'
-import { ref, onMounted  } from 'vue'
+import { ref, onMounted } from 'vue'
 import { getUserId } from '@/api/GetUserId'
 import { getUserInfo } from '@/api/UserInfo'
 import { userStatus } from '@/stores/userStatus'
@@ -124,6 +124,9 @@ const getLeft = (index: number) => {
 }
 const getTop = (index: number) => {
   return 16 + (index % 2) * 14 + '%'
+}
+const getFontSize = (index: number) => {
+  return 1 + index * 0.3 + 'em'
 }
 </script>
 
@@ -180,14 +183,14 @@ header {
 .AboutMe {
   grid-row: span 2;
   grid-column: span 2;
-  background-image: url('https://cdn.bruceau.com/static/media/citybg.e867312d.png');
-  background-repeat: no-repeat;
-  background-color: #fffbf3;
+  background-image: url('@/img/cityBg.png');
+  background-repeat: repeat-x;
+  background-color: skyblue;
   background-position: bottom;
 }
 .OtherData {
   grid-row: span 2;
-  background-color: #ff98c6;
+  background-color: bisque;
 }
 .Git {
   grid-row: span 1;
@@ -280,9 +283,11 @@ header {
 
 @media screen and (max-width: 800px) {
   .main {
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
     grid-template-columns: 1fr;
     overflow: auto;
+    border-radius: 20px;
   }
   .cop {
     margin: 5px;
@@ -295,25 +300,32 @@ header {
   }
   .Photo {
     grid-row: span 1;
+    height: 300px;
   }
   .AboutMe {
     grid-row: span 1;
     grid-column: span 1;
-  }
-  .OtherData {
-    grid-row: span 1;
-  }
-  .Git {
-    grid-row: span 1;
-  }
-  .Mail {
-    grid-row: span 1;
-  }
-  .Wechat {
-    grid-row: span 1;
+    font-size: 8px;
   }
   .Address {
     grid-row: span 1;
+    height: 200px;
+  }
+  .OtherData {
+    grid-row: span 1;
+    height: 600px;
+  }
+  .Git {
+    grid-row: span 1;
+    height: 180px;
+  }
+  .Mail {
+    grid-row: span 1;
+    height: 180px;
+  }
+  .Wechat {
+    grid-row: span 1;
+    height: 180px;
   }
   .hasPic img {
     width: 50px;
@@ -331,11 +343,25 @@ header {
   }
   .cloud {
     img {
-      margin-top: -20%;
+      margin-top: -30%;
     }
     strong {
-      font-size: 1rem;
+      font-size: 0.7rem;
     }
+  }
+  .city {
+    width: 100%;
+    .iconface {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  .mylabel {
+    min-height: 300px;
+  }
+  .comments {
+    padding-top: 500px;
+    padding-bottom: 500px;
   }
 }
 </style>

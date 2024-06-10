@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import datetime
 from flask_jwt_extended import create_access_token,JWTManager, get_jwt_identity, jwt_required, get_jwt
 from os import path
@@ -57,8 +57,42 @@ def initSql():
         # 如果数据库中没有对应的表，则创建表
         connectSql()
 
+# 初始化文件夹
+def initDir():
+
+    dir_path = path.join(path.dirname(__file__), 'static')
+    if not path.exists(dir_path):
+        print('初始化文件夹')
+        # 创建文件夹
+        path.makedirs(dir_path)
+        print('创建文件夹成功')
+    else:
+        print('文件夹已存在')
+
+    # 判断是否存在文件夹
+    dir_path = path.join(path.dirname(__file__), 'static', 'srcp', 'img')
+    if not path.exists(dir_path):
+        print('初始化文件夹')
+        # 创建文件夹
+        path.makedirs(dir_path)
+        print('创建文件夹成功')
+    else:
+        print('文件夹已存在')
+
+    dir_path = path.join(path.dirname(__file__), 'static', 'srcp', 'md')
+    if not path.exists(dir_path):
+        print('初始化文件夹')
+        # 创建文件夹
+        path.makedirs(dir_path)
+        print('创建文件夹成功')
+    else:
+        print('文件夹已存在')
+
+    
+
 
 def main():
+    initDir()
     initSql()
 
 
@@ -88,7 +122,10 @@ app.config['JWT_SECRET_KEY'] = 'sdfdsfdsf'
 jwt = JWTManager()
 jwt.init_app(app)
 
-@app.route('/login', methods=['POST'])
+
+
+# 接口
+@app.route('/api/login', methods=['POST'])
 def login():
     userName = request.json.get('userName')
     userPassword = request.json.get('userPassword')
@@ -108,7 +145,7 @@ def login():
     else:
         return '密码错误', 500
 
-@app.route('/getUserList')
+@app.route('/api/getUserList')
 def getUserList():
     db = sqlite3.connect('db.sqlite')
     cursor = db.cursor()
@@ -128,7 +165,7 @@ def getUserList():
     return res, 200
 
 # 获取用户文章列表
-@app.route('/getUserArticle')
+@app.route('/api/getUserArticle')
 def getUserArticle():
 
     authorId = request.args.get('userId')
@@ -160,7 +197,7 @@ def getUserArticle():
     return res, 200
 
 # 设置或注册用户
-@app.route('/setUser', methods=['POST'])
+@app.route('/api/setUser', methods=['POST'])
 @jwt_required(optional=True)
 def setUser():
     # post请求
@@ -231,7 +268,7 @@ def setUser():
 
 
 # 获取用户信息
-@app.route('/getUserInfo', methods=['GET'])
+@app.route('/api/getUserInfo', methods=['GET'])
 def getUserInfo():
     userId = request.args.get('userId')
     if userId == None:
@@ -266,7 +303,7 @@ def getUserInfo():
 
     return res, 200
 # 获取文章
-@app.route('/getArticle', methods=['GET'])
+@app.route('/api/getArticle', methods=['GET'])
 def getArticle():
     articleId = request.args.get('articleId')
     if articleId == None:
@@ -292,7 +329,7 @@ def getArticle():
     return res, 200
 
 # 发布或修改文章或删除
-@app.route('/setArticle', methods=['POST'])
+@app.route('/api/setArticle', methods=['POST'])
 @jwt_required(optional=True)
 def setArticle():
     # post请求
@@ -369,7 +406,7 @@ def setArticle():
 
     return '成功', 200
 
-@app.route('/checkUser', methods=['GET'])
+@app.route('/api/checkUser', methods=['GET'])
 def checkUser():
     userName = request.args.get('userName')
     if userName == None:
@@ -386,7 +423,7 @@ def checkUser():
     return {"userId": userId}, 200
 
 # 文件上传功能
-@app.route('/upload', methods=['POST'])
+@app.route('/api/upload', methods=['POST'])
 def upload():
 
     f = request.files['file']
@@ -406,7 +443,7 @@ def upload():
 
     # 文件名=base64加密+时间戳取前10位
     filename = base64.b64encode((f.filename.split('.')[0] + str(int(time.time()))).encode()).decode()[:10] + '.' + f.filename.split('.')[-1]
-    upload_path = path.join(basepath, 'src', fileType, filename)
+    upload_path = path.join(basepath, 'static', 'srcp', fileType, filename)
     f.save(upload_path)
 
     return {
@@ -415,7 +452,7 @@ def upload():
     }, 200
 
 # 获取评论
-@app.route('/getComment', methods=['GET'])
+@app.route('/api/getComment', methods=['GET'])
 def getComment():
     authorId = request.args.get('authorId')
     if authorId  == None:
@@ -440,7 +477,7 @@ def getComment():
 
     return res, 200
 
-@app.route('/setComment', methods=['POST'])
+@app.route('/api/setComment', methods=['POST'])
 def setComment():
     
     # post请求
@@ -458,6 +495,19 @@ def setComment():
     db.commit()
     return '成功', 200
 
+# 主页
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
+# 其他页面转发给前端
+@app.route('/<path:fallback>')
+def fallback(fallback):       # Vue Router 的 mode 为 'hash' 时可移除该方法
+    if fallback.startswith('assets/') or fallback.startswith('srcp/'):
+        return app.send_static_file(fallback)
+    else:
+        return app.send_static_file('index.html')
+
 if __name__ == '__main__':
     main()
-    app.run(port='7921', host='0.0.0.0')
+    app.run(port='7921', host='0.0.0.0', debug=True, threaded=True)

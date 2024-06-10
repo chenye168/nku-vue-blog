@@ -12,7 +12,7 @@
           <div class="num">{{ index + 1 }}</div>
           <router-link :to="'/' + item['userName'] + '/home'" class="author">
             <dt class="avatar">
-              <img :src="'http://src.cycodes.cn/src/img/' + item.avatar" alt="avatar" />
+              <img :src="'srcp/img/' + item.avatar" alt="avatar" />
             </dt>
             <dd>{{ item['userName'] }}</dd>
           </router-link>

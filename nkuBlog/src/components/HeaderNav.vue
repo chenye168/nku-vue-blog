@@ -7,7 +7,7 @@
       @select="handleSelect"
       router
     >
-      <img src="https://cdn.bruceau.com/static/media/logo.fc6bc3c1.png" @click="backHome" />
+      <img src="@/img/homePc.png" @click="backHome" />
       <el-menu-item v-if="!userStore.hasLogin" index="/login">Login</el-menu-item>
       <el-sub-menu index="2" v-if="userStore.hasLogin" class="subMenu">
         <template #title>{{ userStore.userName }}</template>
@@ -37,9 +37,9 @@ let activeIndex = route.path
 
 const user = route.params.user
 
-const getPath = (path2: String) => {
-  return '/' + user + '/' + path2
-}
+// const getPath = (path2: String) => {
+//   return '/' + user + '/' + path2
+// }
 
 const getMyPath = () => {
   return '/' + userStore.value.userName + '/home'
@@ -53,11 +53,11 @@ const logout = () => {
   userStore.value.hasLogin = false
   userStore.value.userName = ''
   userStore.value.token = ''
-  router.push('/'+user+'/home')
+  router.push('/' + user + '/home')
 }
 
 const handleSelect = (key: string, keyPath: string[]) => {
-  // console.log(key, keyPath)
+  // //console.log(key, keyPath)
   // routerStore.value.Type = 'leave'
   // routerStore.value.isRouter = true
 }

@@ -32,31 +32,33 @@
         <div class="rightButton">
           <span v-if="activeId == -1">
             <div class="picInsert">
-            <div class="picDisplay">
-              <img src="/public/article.png">
+              <div class="picDisplay">
+                <img src="@/img/article.png" />
+              </div>
+              <div>
+                <el-button type="primary" @click="saveArticle">上传文章</el-button>
+              </div>
             </div>
-            <div>
-            <el-button type="primary" @click="saveArticle">上传文章</el-button>
-            </div>
-          </div>
           </span>
           <span v-else>
             <div class="picInsert">
-            <div class="picDisplay">
-              <img src="/public/savebutton.png">
-            </div>
-            <div>
-            <el-button type="primary" @click="saveArticle">保存文章</el-button>
-            </div>
+              <div class="picDisplay">
+                <img src="@/img/savebutton.png" />
+              </div>
+              <div>
+                <el-button type="primary" @click="saveArticle">保存文章</el-button>
+              </div>
             </div>
             <div class="picInsert">
-            <div class="picDisplay">
-              <img src="/public/deletebutton.png">
+              <div class="picDisplay">
+                <img src="@/img/deletebutton.png" />
+              </div>
+              <div>
+                <el-button type="danger" @click="deleteArticle" v-if="activeId !== -1"
+                  >删除文章</el-button
+                >
+              </div>
             </div>
-          <div>
-            <el-button type="danger" @click="deleteArticle" v-if="activeId !== -1">删除文章</el-button>
-          </div>
-        </div>
           </span>
         </div>
       </div>
@@ -98,7 +100,7 @@ const createTime = ref('')
 
 const getArticleList = async () => {
   // 获取文章列表
-  console.log('获取文章列表')
+  // //console.log('获取文章列表')
   let res = await getUserId(userStore.value.userName)
   res = await getUserArticle(res.data.userId)
   return res.data
@@ -106,7 +108,7 @@ const getArticleList = async () => {
 
 const getArticleDetail = async (text: string) => {
   // 获取文章详情
-  console.log('获取文章详情')
+  // //console.log('获取文章详情')
   title.value = articleList.value[activeId.value].title
   let res = await getArticle(text)
 
@@ -114,7 +116,7 @@ const getArticleDetail = async (text: string) => {
 }
 
 const changeArticle = async (index: number) => {
-  console.log('切换文章')
+  // //console.log('切换文章')
   activeId.value = index
   createTime.value = articleList.value[index].datetime
   text.value = await getArticleDetail(articleList.value[index].articleText)
@@ -136,7 +138,7 @@ onMounted(async () => {
 
 //新建文章
 const newArticle = () => {
-  console.log('新建文章')
+  // //console.log('新建文章')
   activeId.value = -1
   text.value = ''
   title.value = ''
@@ -159,25 +161,25 @@ const getNowTime = () => {
 
 //删除文章
 const deleteArticle = async () => {
-  console.log('删除文章')
+  ////console.log('删除文章')
   await DeleteArticle({
     articleId: articleList.value[activeId.value].articleId
   }).then(async (res) => {
-    console.log(res)
+    ////console.log(res)
     if (res.status === 200) {
       await refreshArticleList()
     } else {
-      console.log('删除失败')
+      //console.log('删除失败')
     }
   })
 }
 
 //上传文章
 const saveArticle = async () => {
-  console.log('上传文章')
+  //console.log('上传文章')
   //文章转换为markdown格式
   let articleText = text.value
-  console.log(articleText)
+  //console.log(articleText)
   // 创建一个 Blob 对象，内容为文章的文本
   let blob = new Blob([articleText], { type: 'text/markdown' })
 
@@ -189,7 +191,7 @@ const saveArticle = async () => {
   let formData = new FormData()
   formData.append('file', file)
 
-  let response = await fetch('http://localhost:5173/api/upload', {
+  let response = await fetch('/api/upload', {
     method: 'POST',
     body: formData
   })
@@ -197,7 +199,7 @@ const saveArticle = async () => {
   let result = await response.json()
 
   if (response.status !== 200) {
-    console.log('上传失败')
+    //console.log('上传失败')
     return
   }
 
@@ -215,47 +217,47 @@ const saveArticle = async () => {
 
 //上传新文章
 const saveNewArticle = async (articleUrl: string) => {
-  console.log('上传新文章')
+  //console.log('上传新文章')
   await DeleteArticle({
     articleText: articleUrl,
     articleTitle: title.value
   }).then(async (res) => {
-    console.log(res)
+    //console.log(res)
     if (res.status === 200) {
       await refreshArticleList()
     } else {
-      console.log('上传失败')
+      //console.log('上传失败')
     }
   })
 }
 
 // //更新文章
 const updateArticle = async (articleUrl: string) => {
-  console.log('更新文章')
+  //console.log('更新文章')
   await DeleteArticle({
     articleText: articleUrl,
     articleTitle: title.value,
     articleId: articleList.value[activeId.value].articleId
   }).then(async (res) => {
-    console.log(res)
+    //console.log(res)
     if (res.status === 200) {
       await refreshArticleList()
     } else {
-      console.log('上传失败')
+      //console.log('上传失败')
     }
   })
 }
 
 //上传图片
 const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
-  console.log('上传图片')
+  //console.log('上传图片')
 
   const responses = await Promise.all(
     files.map((file: File) => {
       let formData = new FormData()
       formData.append('file', file)
 
-      return fetch('http://localhost:5173/api/upload', {
+      return fetch('/api/upload', {
         method: 'POST',
         body: formData
       })
@@ -265,11 +267,11 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   const results = await Promise.all(responses.map((response) => response.json()))
 
   if (responses.some((response) => response.status !== 200)) {
-    console.log('上传失败')
+    //console.log('上传失败')
     return
   }
 
-  callback(results.map((item) => 'http://src.cycodes.cn/src/img/' + item.path))
+  callback(results.map((item) => '/srcp/img/' + item.path))
 }
 </script>
 
@@ -363,33 +365,32 @@ section {
   margin: 0 auto;
   overflow: auto;
 }
-.rightButton{
+.rightButton {
   margin-top: 10px;
   font-size: 20px;
-  display:felx;
+  display: felx;
   flex-direction: column;
   justify-content: center;
 }
-.publishInfo{
+.publishInfo {
   position: relative;
-  text-align:center;
-  margin-top:5px;
+  text-align: center;
+  margin-top: 5px;
   font-size: 20px;
 }
-img{
+img {
   max-height: 30px;
   max-width: 30px;
 }
-.picInsert
-{
-  gap:5px;
-  display:flex;
+.picInsert {
+  gap: 5px;
+  display: flex;
   flex-direction: row;
   justify-content: center;
 }
-.picDisplay{
-  height:30px;
-  width:30px;
-  margin-top:5px;
+.picDisplay {
+  height: 30px;
+  width: 30px;
+  margin-top: 5px;
 }
 </style>

@@ -47,7 +47,7 @@ import { getMessages } from '@/api/GetMessages'
 const { userId, currentUser } = defineProps(['userId', 'currentUser'])
 
 const message = ref('')
-const allmessages = ref<{commentorName: string, commentText: string, datetime: Date}[]>([])
+const allmessages = ref<{ commentorName: string; commentText: string; datetime: Date }[]>([])
 const hasData = ref(false)
 const submitMessage = async () => {
   if (message.value == '' || message.value.replace(/(^\s*)|(\s*$)/g, '') == '') {
@@ -56,9 +56,9 @@ const submitMessage = async () => {
   }
   const userName = currentUser == '' ? '游客' : currentUser
   await addMessage({
-    "commentText": message.value,
-    "authorId": userId,
-    "commentorName": userName
+    commentText: message.value,
+    authorId: userId,
+    commentorName: userName
   })
   allmessages.value = await (await getMessages(userId)).data
   message.value = ''
@@ -66,37 +66,47 @@ const submitMessage = async () => {
 
 onMounted(async () => {
   allmessages.value = await (await getMessages(userId)).data
-  console.log(allmessages.value)
+  //console.log(allmessages.value)
   if (allmessages.value.length > 0) {
     hasData.value = true
-    console.log(allmessages.value)
+    //console.log(allmessages.value)
   }
 })
 </script>
-
 <style scoped>
+@media screen and (max-width: 800px) {
+  .el-card-d {
+    height: 500px;
+  }
+}
+
+/*控制留言内容的滚动和布局 */
 .infinite-list-wrapper {
-  overflow: auto;
+  overflow-y: auto;
   position: absolute;
   top: 10px;
-  bottom: 100px;
+  bottom: 120px; /* 调整底部距离，使输入框有空间 */
+  left: 10px;
+  right: 10px;
+  padding-right: 17px; /* 添加右侧内边距，使滚动条不覆盖内容 */
+  box-sizing: content-box; /* 确保滚动条不影响元素大小 */
+  background-color: bisque;
 }
+
 .el-card-messages {
-  position: relative;
-  top: 300px;
-  width: 100%;
-  height: 20px;
-  margin-top: 10px;
-  letter-spacing: 20px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
 }
+
 .submit-message {
-  position: relative;
-  bottom: 0;
-  width: 100%;
   margin-top: 10px;
   background: rgb(235, 245, 247);
   color: cadetblue;
-  letter-spacing: 20px;
+  letter-spacing: 1px;
 }
 
 .el-card-d {
@@ -105,5 +115,18 @@ onMounted(async () => {
   bottom: 10px;
   left: 10px;
   right: 10px;
+}
+
+.el-card-m {
+  display: inline-block; /* 确保卡片宽度根据内容调整 */
+  white-space: pre-wrap; /* 保持内容的空白和换行 */
+  max-width: 100%; /* 限制卡片最大宽度 */
+  word-wrap: break-word; /* 自动换行 */
+}
+
+.comment-text {
+  display: inline-block; /* 确保内容宽度根据文本调整 */
+  white-space: pre-wrap; /* 保持内容的空白和换行 */
+  word-wrap: break-word; /* 自动换行 */
 }
 </style>
