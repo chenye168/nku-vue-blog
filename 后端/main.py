@@ -9,6 +9,7 @@ import random
 import itertools
 import base64
 import json
+import os
 
 import time
 
@@ -44,11 +45,12 @@ def initSql():
         print('初始化数据库')
         # 创建数据库
         open(db_path, 'w').close()
+        print(db_path)
         print('创建数据库成功')
         # 连接数据库
         connectSql()
         # 创建表
-        with open(path.dirname(__file__)+'/sqlScript/initTable.sql', 'r', encoding='utf8') as f:
+        with open(path.join(path.dirname(__file__),'sqlScript','initTable.sql'), 'r', encoding='utf8') as f:
             sql = f.read()
             cursor.executescript(sql)
 
@@ -64,7 +66,16 @@ def initDir():
     if not path.exists(dir_path):
         print('初始化文件夹')
         # 创建文件夹
-        path.makedirs(dir_path)
+        os.mkdir(dir_path)
+        print('创建文件夹成功')
+    else:
+        print('文件夹已存在')
+
+    dir_path = path.join(path.dirname(__file__), 'static', 'srcp')
+    if not path.exists(dir_path):
+        print('初始化文件夹')
+        # 创建文件夹
+        os.mkdir(dir_path)
         print('创建文件夹成功')
     else:
         print('文件夹已存在')
@@ -74,7 +85,7 @@ def initDir():
     if not path.exists(dir_path):
         print('初始化文件夹')
         # 创建文件夹
-        path.makedirs(dir_path)
+        os.mkdir(dir_path)
         print('创建文件夹成功')
     else:
         print('文件夹已存在')
@@ -83,7 +94,7 @@ def initDir():
     if not path.exists(dir_path):
         print('初始化文件夹')
         # 创建文件夹
-        path.makedirs(dir_path)
+        os.mkdir(dir_path)
         print('创建文件夹成功')
     else:
         print('文件夹已存在')

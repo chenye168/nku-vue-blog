@@ -7,17 +7,17 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   server: {
-    'host': '0.0.0.0',
+    host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://api.cycodes.cn',
+        target: 'http://localhost:7921',
         changeOrigin: true,
-        rewrite: (path) => path.replace('/api', '')
+        rewrite: (path) => path.replace('/api', '/api')
       },
       '/srcp': {
-        target: 'http://src.cycodes.cn',
+        target: 'http://localhost:7921',
         changeOrigin: true,
-        rewrite: (path) => path.replace('/srcp', '/src')
+        rewrite: (path) => path.replace('/srcp', '/srcp')
       }
     }
   },
