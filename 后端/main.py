@@ -521,4 +521,4 @@ def fallback(fallback):       # Vue Router 的 mode 为 'hash' 时可移除该�
 
 if __name__ == '__main__':
     main()
-    app.run(port='7921', host='0.0.0.0', debug=True, threaded=True)
+    app.run(port='7921', host='0.0.0.0', threaded=True)
